@@ -1,0 +1,227 @@
+$custom-color-light: blue;
+$custom-color-dark: orange;
+// $custom-color-light: darken(RoyalBlue, 5%);
+// $custom-color-dark: lighten(maroon, 20%);
+$slow: 0.25s;
+$fast: 0.02s;
+
+@mixin theme($dark: false){
+    $background-color : #fff;
+    $screen-color : #aaa;
+    $text-color : #444;
+    $calcu-base-color : #ccc;
+    $calcu-color : #eee;
+    $calcu-border-color : transparent;
+    $color : $custom-color-light;
+    $text : "Light Mode";
+    @if $dark {
+        $background-color : #222;
+        $screen-color : #777;
+        $text-color : #eee;
+        $calcu-base-color : #111;
+        $calcu-color : #333;
+        $calcu-border-color : transparent;
+        $color : $custom-color-dark;
+        $text : "Dark Mode";
+    }
+    
+    background-color: $background-color;
+    color: $text-color;
+    transition: $slow;
+
+    .calculator-container{
+        transition: $slow;
+        border-color: $calcu-border-color;
+        background-color: $calcu-base-color;
+        .calculator{
+            transition: $slow;
+            background-color: $calcu-color;
+           .screen{
+                transition: $fast;
+                color: $text-color;
+                background-color: $screen-color;
+           }
+           .form-check-label{
+               color: $screen-color;
+               &:after{
+                    transition: $fast;
+                    content: $text;
+               }
+            }
+        }
+    }
+
+    @for $i from 1 through 4 {
+        .btn-custom-#{$i}{
+            transition: $slow;
+            font-weight: bold;
+            background-color: desaturate(adjust-hue($color, $i * -10deg), 30%);
+            color: #ffffffcc;
+            &:hover{
+                background-color: adjust-hue($color, $i * -2deg);
+                color: #ffffffdd;
+            }
+        }
+    }
+}
+#calculator{
+    height: auto;
+    min-height: 100%;
+    width: 100%;
+    position: absolute;
+}
+.light-theme{
+    @include theme(false);
+}
+.dark-theme{
+    @include theme(true);
+}
+#calculator .container{
+    margin: 3em auto;
+}
+.calculator-container{
+    border-style: solid;
+    margin: 15px auto;
+    border-radius: 30px;
+    height: 500px;
+    position: relative;
+    max-width: 500px;
+    min-width: 300px;
+    .calculator{
+        border-radius: 20px;
+        *{
+            transition: $fast;
+        }
+        &>.p-0{
+            height: 100%;
+        }
+        .top-container{
+            height: 30%;
+            padding: 10px;
+            .col-12{
+                padding: 2px!important;
+                .screen{
+                    border-radius: 15px;
+                    height: 100%;
+                    font-family: 'Orbitron', sans-serif;
+                    position: relative;
+                    .above-display{
+                        position: absolute;
+                        top: 10px;
+                        right: 8px;
+                        font-size: 25px;
+                        margin: 0;
+                        line-height: 15px;
+                    }
+                    .display{
+                        position: absolute;
+                        bottom: 5px;
+                        right: 5px;
+                        font-size: 50px;
+                        margin: 0;
+                        line-height: 50px;
+                    }
+                }
+            }
+        }
+        .buttons-container{
+            height: 70%;
+            width: 100%;
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            .buttons-row{
+                height: calc(100% / 5);
+                .button-container{
+                    padding: 2px!important;
+                    .button{
+                        font-size: 15px;
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+                &:first-child{
+                    .button-container:last-child .button{
+                        border-top-right-radius: 15px!important;
+                    }
+                    .button-container:first-child .button{
+                        border-top-left-radius: 15px!important;
+                    }   
+                }
+                
+                &:last-child{
+                    .button-container:last-child .button{
+                        border-bottom-right-radius: 15px!important;
+                    }
+                    .button-container:first-child .button{
+                        border-bottom-left-radius: 15px!important;
+                    }
+                }
+            }
+        }
+         .form-check-label{
+            right: 55px;
+            top: 3px;
+         }
+     }
+}
+
+.form-check-input {
+    height: 1.5rem;
+    width: 3rem!important;
+    border-radius: 1.5rem * 2;
+    border-color: transparent;
+    cursor: pointer;
+    margin-top: 2px;
+}
+.form-check-input:focus:checked {
+    box-shadow: 0 0 0 0.25rem rgba($custom-color-dark, 0.25)
+}
+.form-check-input:checked {
+    background-color: desaturate($custom-color-dark, 25%);
+    border-color: desaturate($custom-color-dark, 25%)!important;
+}
+
+@media only screen and (max-width: 576px) {
+    #calculator .container{
+        margin: 0;
+        padding: 1.5em;
+    }
+    .calculator-container{
+        height: calc(100vh - 3em);
+        min-height: 400px;
+        max-height: 600px;
+        .calculator{
+            .top-container{
+                .col-12{
+                    padding: 1px!important;
+                    .screen{
+                        .above-display{
+                            font-size: 4vw;
+                            line-height: 4vw;
+                        }
+                        .display{
+                            bottom: -2px;
+                            right: 5px;
+                            font-size: 9vw;
+                        }
+                    }
+                }
+            }
+            .form-check{
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+                .form-check-label{
+                    right: 52px;
+                    top: 1px;
+                }
+                .form-check-input{
+                    margin-top: 1px;
+                }
+            }
+        }
+    }
+}
